@@ -1,0 +1,83 @@
+<template>
+  <el-card class="box-card">
+    <div slot="header" class="clearfix">
+      <span class="title">系统登录</span>
+      <el-button type="text" class="signbtn" @click="handleClick('platform')">注册平台管理员</el-button>
+      <el-button type="text" class="signbtn" @click="handleClick('shop')">注册门店管理员</el-button>
+    </div>
+    <div class="inputbox">
+      <el-input
+        class="formItem"
+        placeholder="请输入用户名"
+        prefix-icon="el-icon-user"
+        v-model="userValue"
+      />
+      <el-input class="formItem" placeholder="请输入密码" prefix-icon="el-icon-lock" v-model="pwdValue" />
+      <div class="formItem">
+        <el-button type="primary" style="width:100%"
+        @click="login">立即登录</el-button>
+      </div>
+    </div>
+  </el-card>
+</template>
+<script>
+import { createNamespacedHelpers } from "vuex";
+const { mapActions } = createNamespacedHelpers("users");
+
+export default {
+  mounted() {
+    const str = this.$route.params.username;
+    if(str){
+        this.userValue = str;
+    }
+  },
+  data() {
+    return {
+      userValue: "",
+      pwdValue: ""
+    };
+  },
+  methods: {
+    handleClick(status) {
+      this.$router.push(`/signIn/${status}`);
+    },
+    login(){
+      this.loginAsync({ username:this.userValue,password:this.pwdValue })
+      .then(data => {
+          if(data.length === 1){
+              this.$message({
+              message: "登陆成功",
+              type: "success"
+            });
+          }
+      })
+    },
+    ...mapActions(["loginAsync"])
+  }
+};
+</script>
+
+<style scoped>
+.inputbox {
+  padding: 0 50px 20px;
+}
+.formItem {
+  margin-top: 20px;
+}
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  flex-grow: 1;
+}
+.clearfix {
+  display: flex;
+  align-items: baseline;
+}
+.box-card {
+  width: 400px;
+  margin: 200px auto 0;
+}
+.signbtn {
+  margin-left: 10px;
+}
+</style>
