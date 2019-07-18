@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import _g from "./_globals"
-import App from './components/pets.vue'
+import App from './App'
 import router from './router'
 import store from './store'
 import ElementUI from 'element-ui';
