@@ -1,5 +1,3 @@
-import {requireComponent} from "./_globals.js"
-
 <template>
   <div class="container">
     <h1>创建店铺</h1>

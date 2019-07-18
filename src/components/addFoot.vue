@@ -32,8 +32,10 @@
 
 <script>
   export default {
-     data:{
-         num:10
+     data(){
+       return {
+         
+       }
      },
       
      methods:{

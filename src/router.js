@@ -22,12 +22,6 @@ export default new Router({
       name: 'signIn',
       component: () => import(/* webpackChunkName: "about" */ './views/SignIn.vue')
     },
-    //  {
-    //   path: '/',
-    //   name: 'applyShop',
-    //   component: ApplyShop
-    // },
-
     {
       path: '/platform',
       name: 'platform',
@@ -48,8 +42,34 @@ export default new Router({
     {
       path: '/info',
       name: 'info',
-      component: () => import(/* webpackChunkName: "about" */ './views/info.vue')
-      
+      component: () => import(/* webpackChunkName: "about" */ './views/info.vue'),
+      children:[
+        {
+          path: '/info/shopservice',
+          name: 'shopservice',
+          component: () => import(/* webpackChunkName: "about" */ './components/ShopService.vue'),
+        },
+        {
+          path: '/info/addFood',
+          name: 'addFood',
+          component: () => import(/* webpackChunkName: "about" */ './components/addFoot.vue'),
+        },
+        {
+          path: '/info/order',
+          name: 'order',
+          component: () => import(/* webpackChunkName: "about" */ './components/order.vue'),
+        },
+        {
+          path: '/info/pets',
+          name: 'pets',
+          component: () => import(/* webpackChunkName: "about" */ './components/pets.vue'),
+        },
+        {
+          path: '/info/applyShop',
+          name: 'applyShop',
+          component: () => import(/* webpackChunkName: "about" */ './components/applyShop.vue'),
+        }
+      ]
     }
   ]
 })
