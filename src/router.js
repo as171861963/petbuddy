@@ -18,7 +18,7 @@ export default new Router({
       component: Login
     },
     {
-      path: '/signIn/:status',
+      path: '/signIn',
       name: 'signIn',
       component: () => import(/* webpackChunkName: "about" */ './views/SignIn.vue')
     },
@@ -28,5 +28,22 @@ export default new Router({
     //   component: ApplyShop
     // },
 
+    {
+      path: '/platform',
+      name: 'platform',
+      component: () => import(/* webpackChunkName: "about" */ './views/Platform.vue'),
+      children:[
+        {
+          path: '/platform/message',
+          name: 'message',
+          component: () => import(/* webpackChunkName: "about" */ './components/messages.vue'),
+        },
+        {
+          path: '/platform/shopManage',
+          name: 'shopManage',
+          component: () => import(/* webpackChunkName: "about" */ './components/shopsManage.vue'),
+        }
+      ]
+    }
   ]
 })
