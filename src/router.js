@@ -37,6 +37,12 @@ export default new Router({
           component: () => import(/* webpackChunkName: "about" */ './components/shopsManage.vue'),
         }
       ]
+    },
+    {
+      path: '/info',
+      name: 'info',
+      component: () => import(/* webpackChunkName: "about" */ './views/info.vue')
+      
     }
   ]
 })
