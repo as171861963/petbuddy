@@ -53,12 +53,6 @@ import { createNamespacedHelpers } from "vuex";
 const { mapActions } = createNamespacedHelpers("users");
 
 export default {
-  mounted() {
-    const str =
-    this.$route.params.status === "platform" ? "平台管理员" : "门店管理员";
-    this.title = str + this.title;
-    this.identity = str;
-  },
   data() {
     return {
       userValue: "jack",
@@ -67,8 +61,8 @@ export default {
       phoneValue: "18182339945",
       emailValue: "137421236@qq.com",
       nameValue: "邢浩",
-      title: "注册",
-      identity: ""
+      title: "门店管理员注册",
+      identity: "门店管理员"
     };
   },
   methods: {
@@ -84,11 +78,11 @@ export default {
           status: "审核中"
         }).then(data => {
           if (data._id) {
-            this.$router.push(`/login/${data.username}`)
             this.$message({
               message: "恭喜你，注册成功",
               type: "success"
             });
+            this.$router.push(`/login/${data.username}`)
           }
         });
       }
