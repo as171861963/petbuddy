@@ -48,9 +48,13 @@ export default {
               message: "登陆成功",
               type: "success"
             });
+            localStorage.setItem("user_name",data[0].username)
             if(data[0].identity === "平台管理员"){
                 this.$router.push(`/platform`);
-                localStorage.setItem("user_name",data[0].username)
+            }
+            else
+            {
+              this.$router.push(`/info`);
             }
           }
       })
