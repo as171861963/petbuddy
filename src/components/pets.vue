@@ -6,15 +6,9 @@
         class="iconBtn"
         type="primary"
         icon="el-icon-circle-plus-outline"
-        @click="addPet = true"
+        @click="dialog('增加商品')"
       >增加</el-button>
-      <el-button
-        ref="btn"
-        class="iconBtn"
-        type="primary"
-        icon="el-icon-edit"
-        @click="test($refs.btn.value)"
-      >修改</el-button>
+      <el-button class="iconBtn" type="primary" icon="el-icon-edit" @click="dialog('修改商品')">修改</el-button>
       <el-button class="iconBtn" type="primary" icon="el-icon-delete">删除</el-button>
       <el-input class="ipt" placeholder="请输入内容" v-model="pet" clearable></el-input>
       <el-button class="iconBtn" style="margin-left: 10px;" type="primary" icon="el-icon-search">搜索</el-button>
@@ -25,7 +19,7 @@
       <label for="price">按价格排序</label>
     </div>
     <!-- 隐藏的添加表单 -->
-    <el-dialog title="增加商品" :visible.sync="addPet" :close-on-click-modal="false" top="10px">
+    <el-dialog :title="btn" :visible.sync="addPet" :close-on-click-modal="false" top="10px">
       <el-form :model="form">
         <div style="display:flex">
           <el-form-item label="商品名称:" :label-width="formLabelWidth">
@@ -77,7 +71,6 @@
             drag
             action="https://jsonplaceholder.typicode.com/posts/"
             multiple
-            :on-success="test"
           >
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">
@@ -144,6 +137,7 @@
 export default {
   data() {
     return {
+      btn: "",
       addPet: false,
       pet: "",
       tableData: [
@@ -176,15 +170,26 @@ export default {
         somatotype: "",
         vaccine: "",
         describe: ""
-      }
+      },
+      update: {}
     };
   },
   methods: {
     addToPet() {
       this.addPet = false;
     },
-    test(fileList) {
-      console.log(response, file, fileList);
+    dialog(value) {
+      this.addPet = true;
+      this.btn = value;
+      if (value === "修改商品") {
+        Object.assign(this.form, this.update);
+      } else {
+        for (const key in this.form) {
+          if (key != "") {
+            this.form[key] = "";
+          }
+        }
+      }
     },
     handleSelection(val, row) {
       if (val.length > 1) {
@@ -193,7 +198,9 @@ export default {
           message: "每次只能修改一条数据",
           type: "warning"
         });
+        return;
       }
+      Object.assign(this.update, ...val);
     }
   }
 };
