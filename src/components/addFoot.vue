@@ -77,9 +77,7 @@
 <script>
 export default {
   data() {
-    return {
-      num: 10
-    };
+    return {};
   },
 
   methods: {

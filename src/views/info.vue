@@ -8,15 +8,23 @@
       active-text-color="#FFCC99"
       router
     >
-      <el-menu-item index="">
+      <el-menu-item index="/info/shopservice">
         <i class="el-icon-message"></i>
         <span slot="title">信息中心</span>
       </el-menu-item>
-      <el-menu-item index="">
+      <el-menu-item index="/info/addFood">
         <i class="el-icon-menu"></i>
         <span slot="title">门店管理</span>
       </el-menu-item>
-      <el-menu-item index>
+      <el-menu-item index="/info/order">
+        <i class="el-icon-user-solid"></i>
+        <span slot="title">用户管理</span>
+      </el-menu-item>
+      <el-menu-item index="/info/pets">
+        <i class="el-icon-user-solid"></i>
+        <span slot="title">用户管理</span>
+      </el-menu-item>
+      <el-menu-item index="/info/applyShop">
         <i class="el-icon-user-solid"></i>
         <span slot="title">用户管理</span>
       </el-menu-item>
