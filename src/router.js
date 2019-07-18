@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from "vue-router";
 import Login from "./views/Login";
+// import ApplyShop from "./applyShop/applyShop"
 
 Vue.use(Router)
 
@@ -21,6 +22,12 @@ export default new Router({
       name: 'signIn',
       component: () => import(/* webpackChunkName: "about" */ './views/SignIn.vue')
     },
+    //  {
+    //   path: '/',
+    //   name: 'applyShop',
+    //   component: ApplyShop
+    // },
+
     {
       path: '/platform',
       name: 'platform',
@@ -37,6 +44,12 @@ export default new Router({
           component: () => import(/* webpackChunkName: "about" */ './components/shopsManage.vue'),
         }
       ]
+    },
+    {
+      path: '/info',
+      name: 'info',
+      component: () => import(/* webpackChunkName: "about" */ './views/info.vue')
+      
     }
   ]
 })
