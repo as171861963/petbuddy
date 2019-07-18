@@ -1,8 +1,16 @@
 <template>
   <div class="entire">
     <div>
-      <el-button type="primary" icon="el-icon-edit">修改订单</el-button>
-      <el-button type="primary" icon="el-icon-delete">删除订单</el-button>
+      <el-button
+        type="primary"
+        icon="el-icon-edit"
+        style="  background-color:#99cccc;border-color: #99cccc;"
+      >修改订单</el-button>
+      <el-button
+        type="primary"
+        icon="el-icon-delete"
+        style="  background-color:#99cccc;border-color: #99cccc;"
+      >删除订单</el-button>
     </div>
     <div class="state">
       <el-table
@@ -12,6 +20,7 @@
         style="width: 100%"
         @selection-change="handleSelectionChange"
       >
+        <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="expand" width="55">
           <template slot-scope="props">
             <el-form label-position="left" inline class="demo-table-expand">
@@ -36,7 +45,6 @@
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column label="订单号" width="200">
           <template slot-scope="scope">{{ scope.row.id }}</template>
         </el-table-column>

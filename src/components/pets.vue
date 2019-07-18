@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height:498px;">
     <!-- 搜索栏 -->
     <div class="BtnBox">
       <el-button
@@ -92,33 +92,30 @@
       ref="multipleTable"
       :data="tableData"
       tooltip-effect="dark"
-      style="width: 100%"
+      class="myTable"
       @select="handleSelection"
     >
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column type="expand" width="55">
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
-            <el-form-item label="地域">
-              <span>{{ props.row.name }}</span>
+            <el-form-item label="产地">
+              <span>{{ props.row.addr }}</span>
             </el-form-item>
             <el-form-item label="类型">
-              <span>{{ props.row.shop }}</span>
-            </el-form-item>
-            <el-form-item label="邮费">
-              <span>{{ props.row.id }}</span>
+              <span>{{ props.row.type }}</span>
             </el-form-item>
             <el-form-item label="体型">
-              <span>{{ props.row.shopId }}</span>
+              <span>{{ props.row.somatotype }}</span>
             </el-form-item>
             <el-form-item label="疫苗">
-              <span>{{ props.row.address }}</span>
+              <span>{{ props.row.vaccine }}</span>
             </el-form-item>
             <el-form-item label="库存">
-              <span>{{ props.row.address }}</span>
+              <span>{{ props.row.stock }}</span>
             </el-form-item>
             <el-form-item label="商品描述">
-              <span>{{ props.row.desc }}</span>
+              <span>{{ props.row.describe }}</span>
             </el-form-item>
           </el-form>
         </template>
@@ -143,17 +140,29 @@ export default {
       tableData: [
         {
           name: "哈士奇",
-          gender: "公",
+          type: "狗",
+          addr: "美国",
           age: "1岁",
+          price: "1000",
           color: "黑白",
-          price: "1000"
+          gender: "公",
+          stock: "5",
+          somatotype: "中型犬",
+          vaccine: "已注射",
+          describe: "美国纯种柯基"
         },
         {
           name: "柯基",
-          gender: "母",
+          type: "狗",
+          addr: "美国",
           age: "0.5岁",
+          price: "1500",
           color: "棕白",
-          price: "1500"
+          gender: "母",
+          stock: "5",
+          somatotype: "中型犬",
+          vaccine: "已注射",
+          describe: "美国纯种柯基"
         }
       ],
       formLabelWidth: "120px",
@@ -164,7 +173,6 @@ export default {
         age: "",
         price: "",
         color: "",
-        resource: "",
         gender: "",
         stock: "",
         somatotype: "",
@@ -177,6 +185,7 @@ export default {
   methods: {
     addToPet() {
       this.addPet = false;
+      this.tableData.push(this.form)
     },
     dialog(value) {
       this.addPet = true;
@@ -225,5 +234,12 @@ export default {
 }
 .addInput {
   width: 200px;
+}
+.myTable {
+  width: 100%;
+  overflow: scroll;
+}
+.myTable::-webkit-scrollbar {
+  display: none;
 }
 </style>
