@@ -2,8 +2,7 @@
   <el-card class="box-card">
     <div slot="header" class="clearfix">
       <span class="title">系统登录</span>
-      <el-button type="text" class="signbtn" @click="handleClick('platform')">注册平台管理员</el-button>
-      <el-button type="text" class="signbtn" @click="handleClick('shop')">注册门店管理员</el-button>
+      <el-button type="text" class="signbtn" @click="handleClick">注册门店管理员</el-button>
     </div>
     <div class="inputbox">
       <el-input
@@ -12,7 +11,7 @@
         prefix-icon="el-icon-user"
         v-model="userValue"
       />
-      <el-input class="formItem" placeholder="请输入密码" prefix-icon="el-icon-lock" v-model="pwdValue" />
+      <el-input class="formItem" placeholder="请输入密码" type="password" prefix-icon="el-icon-lock" v-model="pwdValue" />
       <div class="formItem">
         <el-button type="primary" style="width:100%"
         @click="login">立即登录</el-button>
@@ -33,13 +32,13 @@ export default {
   },
   data() {
     return {
-      userValue: "",
-      pwdValue: ""
+      userValue: "stuart",
+      pwdValue: "1234"
     };
   },
   methods: {
-    handleClick(status) {
-      this.$router.push(`/signIn/${status}`);
+    handleClick() {
+      this.$router.push(`/signIn`);
     },
     login(){
       this.loginAsync({ username:this.userValue,password:this.pwdValue })
@@ -49,6 +48,14 @@ export default {
               message: "登陆成功",
               type: "success"
             });
+            localStorage.setItem("user_name",data[0].username)
+            if(data[0].identity === "平台管理员"){
+                this.$router.push(`/platform`);
+            }
+            else
+            {
+              this.$router.push(`/info`);
+            }
           }
       })
     },
