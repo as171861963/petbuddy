@@ -132,7 +132,7 @@ export default {
 }
 .mtable {
   width: 100%;
-  height: 377px;
+  height: 470px;
   overflow-y: scroll;
 }
 .mtable::-webkit-scrollbar {

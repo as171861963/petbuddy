@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table :data="message" stripe style="width: 100%;height:377px;">
+    <el-table :data="message" stripe style="width: 100%;height:470px;">
       <el-table-column prop="name" label="门店名称" width="180"></el-table-column>
       <el-table-column prop="type" label="门店类型" width="180"></el-table-column>
       <el-table-column prop="contact" label="联系人"></el-table-column>

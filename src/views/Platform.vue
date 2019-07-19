@@ -8,34 +8,57 @@
       active-text-color="#FFCC99"
       router
     >
-      <el-menu-item index="/platform/message">
-        <i class="el-icon-message"></i>
-        <span slot="title">信息中心</span>
-      </el-menu-item>
-      <el-menu-item index="/platform/shopManage">
-        <i class="el-icon-menu"></i>
-        <span slot="title">门店管理</span>
-      </el-menu-item>
-      <el-menu-item index>
-        <i class="el-icon-user-solid"></i>
-        <span slot="title">用户管理</span>
-      </el-menu-item>
-      <el-menu-item index style="margin-top:400px">
-        <i class="el-icon-setting"></i>
-        <span slot="title">设置</span>
-      </el-menu-item>
+      <el-submenu index="1">
+        <template slot="title">
+          <i class="el-icon-message"></i>
+        </template>
+        <el-menu-item-group>
+          <span slot="title" style="color:white;font-size:16px;">信息管理</span>
+          <el-menu-item index="/platform/message" style="font-size:12px;">信息中心</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+
+      <el-submenu index="2">
+        <template slot="title">
+          <i class="el-icon-menu"></i>
+        </template>
+        <el-menu-item-group>
+          <span slot="title" style="color:white;font-size:16px;">门店管理</span>
+          <el-menu-item index="/platform/shopManage" style="font-size:12px;">门店信息</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+
+      <el-submenu index="3">
+        <template slot="title">
+          <i class="el-icon-user-solid"></i>
+        </template>
+        <el-menu-item-group>
+          <span slot="title" style="color:white;font-size:16px;">用户管理</span>
+          <el-menu-item index style="font-size:12px;">用户信息</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+
+      <el-submenu index="4">
+        <template slot="title">
+          <i class="el-icon-setting"></i>
+        </template>
+        <el-menu-item-group>
+          <span slot="title" style="color:white;font-size:16px;">设置</span>
+          <el-menu-item index style="font-size:12px;">注销</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
     </el-menu>
     <el-container class="container">
       <el-header class="mheader">
         <div class="headtitle">爱宠邦</div>
         <div>{{ time }}</div>
         <div>
-          <i class="el-icon-user-solid"></i>{{ username }} 欢迎您
+          <i class="el-icon-user-solid"></i>
+          {{ username }} 欢迎您
         </div>
         <div>
           <i class="gap"></i>平台管理员
         </div>
-        <div>退出</div>
       </el-header>
       <el-container class="right_side">
         <el-main class="centerbody">
@@ -49,14 +72,14 @@
 <script>
 export default {
   mounted() {
-      this.time = this.formattime(new Date());
-      this.username = localStorage.getItem("user_name")
+    this.time = this.formattime(new Date());
+    this.username = localStorage.getItem("user_name");
   },
   data() {
     return {
       isCollapse: true,
-      time:"",
-      username:""
+      time: "",
+      username: ""
     };
   },
   methods: {
@@ -77,6 +100,7 @@ i {
 }
 .outside {
   display: flex;
+  height: 700px;
 }
 .left {
   border-right: 1px solid lightgray;
