@@ -1,26 +1,26 @@
 <template>
   <div>
-    <el-table :data="message" stripe class="mtable">
+    <el-table :data="info.rows" stripe class="mtable">
       <el-table-column type="expand">
-        <template slot-scope="">
+        <template slot-scope="props">
           <el-form label-position="left" flex class="demo-table-expand">
             <el-form-item label="营业时间">
-              <span>09:00-18:00</span>
+              <span>{{formatTime(props.row.startTime)}}-{{formatTime(props.row.endTime)}}</span>
             </el-form-item>
             <el-form-item label="状态:">
-              <span>待审核</span>
+              <span>{{props.row.status}}</span>
             </el-form-item>
             <el-form-item label="面积:">
-              <span>211</span>
+              <span>{{props.row.area}}</span>
             </el-form-item>
             <el-form-item label="WIFI:">
-              <span>有</span>
+              <span>{{props.row.wifi}}</span>
             </el-form-item>
             <el-form-item label="停车:">
-              <span>可停车</span>
+              <span>{{props.row.parking}}</span>
             </el-form-item>
             <el-form-item label="门店简介:">
-              <span> lovely home for every cute petsa lovely home for every cute petsa lovely home for every cute pets</span>
+              <span>{{props.row.brief}}</span>
             </el-form-item>
           </el-form>
         </template>
@@ -42,64 +42,37 @@
         background
         :page-size="6"
         layout="pager"
-        :total="message.length"
+        :total="info.total"
         @current-change="handleChange"
       ></el-pagination>
     </div>
   </div>
 </template>
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapActions, mapState } = createNamespacedHelpers("shops");
+
 export default {
+  mounted(){
+    const managerId = localStorage.getItem("_id");
+    this.getShopsAsync(managerId);
+  },
   data() {
     return {
-      message: [
-        {
-          name: "淘淘宠物店",
-          type: "宠物店",
-          contact: "陈涛",
-          phone: "18182339945",
-          addr: "成都市青羊区"
-        },
-        {
-          name: "淘淘宠物店",
-          type: "宠物店",
-          contact: "陈涛",
-          phone: "18182339945",
-          addr: "成都市青羊区"
-        },
-        {
-          name: "淘淘宠物店",
-          type: "宠物店",
-          contact: "陈涛",
-          phone: "18182339945",
-          addr: "成都市青羊区"
-        },
-        {
-          name: "淘淘宠物店",
-          type: "宠物店",
-          contact: "陈涛",
-          phone: "18182339945",
-          addr: "成都市青羊区"
-        },
-        {
-          name: "淘淘宠物店",
-          type: "宠物店",
-          contact: "陈涛",
-          phone: "18182339945",
-          addr: "成都市青羊区"
-        },
-        {
-          name: "淘淘宠物店",
-          type: "宠物店",
-          contact: "陈涛",
-          phone: "18182339945",
-          addr: "成都市青羊区"
-        }
-      ]
+      
     };
+  },
+  computed:{
+    ...mapState({ info:"data" })
   },
   methods: {
     handleEdit(index, row) {},
+    formatTime(DateString){
+      const date = new Date(DateString);
+      const h = date.getHours();
+      const m = date.getMinutes();
+      return `${h}:${m}`;
+    },
     handleDelete() {
       this.$confirm("是否删除？此操作不可逆！", "提示", {
         confirmButtonText: "确定",
@@ -120,7 +93,10 @@ export default {
           });
         });
     },
-    handleChange(page) {}
+    handleChange(page) {
+        this.getShopsByPage(page);      
+    },
+    ...mapActions(["getShopsAsync","getShopsByPage"])
   }
 };
 </script>

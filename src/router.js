@@ -50,6 +50,11 @@ export default new Router({
           component: () => import(/* webpackChunkName: "about" */ './components/Hello.vue'),
         },
         {
+          path: '/info/shopManage',
+          name: 'shopManage2',
+          component: () => import(/* webpackChunkName: "about" */ './components/shopsManage.vue'),
+        },
+        {
           path: '/info/shopservice',
           name: 'shopservice',
           component: () => import(/* webpackChunkName: "about" */ './components/ShopService.vue'),
