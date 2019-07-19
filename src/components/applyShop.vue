@@ -1,33 +1,33 @@
 <template>
   <div class="container">
     <h1>创建店铺</h1>
-    <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm applyShop">
+    <el-form :model="newShop" ref="newShop" label-width="100px" class="demo-ruleForm applyShop">
       <el-form-item label="店铺名称" prop="name" class="input">
-        <el-input v-model="ruleForm.name"></el-input>
+        <el-input v-model="newShop.name"></el-input>
       </el-form-item>
-      <el-form-item label="联系人" prop="name" class="input">
-        <el-input v-model="ruleForm.name"></el-input>
+      <el-form-item label="联系人" prop="contact" class="input">
+        <el-input v-model="newShop.contact"></el-input>
       </el-form-item>
-      <el-form-item label="联系电话" prop="name" class="input">
-        <el-input v-model="ruleForm.name"></el-input>
+      <el-form-item label="联系电话" prop="phone" class="input">
+        <el-input v-model="newShop.phone"></el-input>
       </el-form-item>
-      <el-form-item label="店铺地址" prop="name" class="input">
-        <el-input v-model="ruleForm.name"></el-input>
+      <el-form-item label="店铺地址" prop="addr" class="input">
+        <el-input v-model="newShop.addr"></el-input>
       </el-form-item>
-
-      <el-form-item label="店铺类型" prop="region" class="type">
-        <el-select v-model="ruleForm.region" placeholder="请选店铺类型">
-          <el-option label="食物" value="shanghai"></el-option>
-          <el-option label="医疗" value="beijing"></el-option>
-          <el-option label="娱乐" value="beijing"></el-option>
-          <el-option label="美容" value="beijing"></el-option>
+      <el-form-item label="店铺类型" prop="type" class="type">
+        <el-select v-model="newShop.type" placeholder="请选店铺类型">
+          <el-option label="食物" value="食物"></el-option>
+          <el-option label="医疗" value="医疗"></el-option>
+          <el-option label="娱乐" value="娱乐"></el-option>
+          <el-option label="美容" value="美容"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="营业执照" prop="name" class="type">
+      <el-form-item label="营业执照" prop="license" class="type">
         <el-upload
           class="upload-demo"
           drag
-          action="https://jsonplaceholder.typicode.com/posts/"
+          action="/shops/fileupload"
+          :on-success="licenseSuccess"
           multiple
         >
           <i class="el-icon-upload"></i>
@@ -38,12 +38,13 @@
           <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
         </el-upload>
       </el-form-item>
-      <el-form-item label="店铺门头照片" prop="name" class="type">
+      <el-form-item label="店铺照片" prop="imgs" class="type">
         <el-upload
           class="upload-demo"
           drag
-          action="https://jsonplaceholder.typicode.com/posts/"
+          action="/shops/fileupload"
           multiple
+          :on-success="imgsSuccess"
         >
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">
@@ -55,42 +56,101 @@
       </el-form-item>
       <el-form-item label="营业时间" required class="type">
         <el-col :span="11">
-          <el-form-item prop="date1" class="time">
-            <el-time-picker placeholder="起始时间" style="width: 100%;"></el-time-picker>
+          <el-form-item prop="startTime" class="time">
+            <el-time-picker v-model="newShop.startTime" placeholder="起始时间" style="width: 100%;"></el-time-picker>
           </el-form-item>
         </el-col>
         <el-col :span="11">
-          <el-form-item prop="date2" class="time">
-            <el-time-picker placeholder="结束时间" style="width: 100%;"></el-time-picker>
+          <el-form-item prop="endTime" class="time">
+            <el-time-picker v-model="newShop.endTime" placeholder="结束时间" style="width: 100%;"></el-time-picker>
           </el-form-item>
         </el-col>
       </el-form-item>
-      <el-form-item label="店铺面积" prop="name" class="input">
-        <el-input v-model="ruleForm.name"></el-input>
+      <el-form-item label="店铺面积" prop="area" class="input">
+        <el-input v-model="newShop.area"></el-input>
       </el-form-item>
-      <el-form-item label="有无停车位" prop="resource" class="type">
-        <el-radio-group v-model="ruleForm.resource">
+      <el-form-item label="有无停车位" prop="parking" class="type">
+        <el-radio-group v-model="newShop.parking">
           <el-radio label="有"></el-radio>
           <el-radio label="无"></el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="店铺简介" prop="desc" class="type">
-        <el-input type="textarea" v-model="ruleForm.desc"></el-input>
+      <el-form-item label="有无WIFI" prop="wifi" class="type">
+        <el-radio-group v-model="newShop.wifi">
+          <el-radio label="有"></el-radio>
+          <el-radio label="无"></el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="店铺简介" prop="brief" class="type">
+        <el-input type="textarea" v-model="newShop.brief"></el-input>
       </el-form-item>
       <el-form-item class="type">
-        <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-        <el-button @click="resetForm('ruleForm')">重置</el-button>
+        <el-button type="primary" class="subBtn" @click="handleSubmit">立即创建</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
+<script>
+import axios from "axios";
+export default {
+  mounted() {
+    this.newShop.managerId = localStorage.getItem("_id");
+  },
+  data() {
+    return {
+      newShop: {
+        name: "淘淘宠物店",
+        contact: "陈涛",
+        phone: "18182339945",
+        addr: "青羊区",
+        type: "食物",
+        license: "",
+        imgs: "",
+        startTime: "",
+        endTime: "",
+        area: "221",
+        parking: "有",
+        wifi: "有",
+        brief: "爱的宠物店",
+        managerId: "",
+        status: "审核中"
+      }
+    };
+  },
+  methods: {
+    handleSubmit() {
+      axios.post("/shops", this.newShop).then(data => {
+        if(data.status === 200){
+          this.$message({
+          message: '恭喜你，申请成功，请耐心等待审核',
+          type: 'success'
+        });
+        }
+      });
+    },
+    licenseSuccess({ url }) {
+      this.newShop.license = url;
+    },
+    imgsSuccess({ url }) {
+      this.newShop.imgs = url;
+    }
+  }
+};
+</script>
+
 <style scoped>
 .container {
-  width: 600px;
-  height: 498px;
+  width: 100%;
+  height: 500px;
   margin: 20px auto 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   overflow-y: scroll;
+}
+.applyShop {
+  width: 600px;
 }
 .container::-webkit-scrollbar {
   display: none;
@@ -108,17 +168,8 @@ h1 {
 .time {
   width: 180px;
 }
+.subBtn {
+  width: 480px;
+}
 </style>
 
-<script>
-export default {
-  data() {
-    return {
-      ruleForm: {
-        name: "",
-        desc: ""
-      }
-    };
-  }
-};
-</script>

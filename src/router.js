@@ -45,6 +45,11 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/info.vue'),
       children:[
         {
+          path: '/info/',
+          name: 'hello',
+          component: () => import(/* webpackChunkName: "about" */ './components/Hello.vue'),
+        },
+        {
           path: '/info/shopservice',
           name: 'shopservice',
           component: () => import(/* webpackChunkName: "about" */ './components/ShopService.vue'),
