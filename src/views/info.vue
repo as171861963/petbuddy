@@ -64,6 +64,7 @@
           <i class="gap"></i>门店管理员
         </div>
         <el-button
+        @click="addApplyShop"
           type="primary"
           style="margin-left:10px;font-size:12px;background-color:#99cccc;border-color: #99cccc;"
           icon="el-icon-plus"
@@ -92,6 +93,9 @@ export default {
     };
   },
   methods: {
+    addApplyShop(){
+      location.hash="/info/applyShop"
+    },
     formattime(date) {
       const y = date.getFullYear();
       const mm = date.getMonth() + 1;

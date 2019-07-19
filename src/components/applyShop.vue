@@ -88,7 +88,12 @@
 <style scoped>
 .container {
   width: 600px;
-  margin: 50px auto;
+  height: 498px;
+  margin: 20px auto 0px;
+  overflow-y: scroll;
+}
+.container::-webkit-scrollbar {
+  display: none;
 }
 h1 {
   text-align: center;
