@@ -8,7 +8,6 @@
       active-text-color="#FFCC99"
       router
     >
-
       <el-submenu index="1">
         <template slot="title">
           <i class="el-icon-menu"></i>
@@ -51,7 +50,6 @@
           <el-menu-item index style="font-size:12px;">注销</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-
     </el-menu>
 
     <el-container class="container">
@@ -65,6 +63,11 @@
         <div>
           <i class="gap"></i>门店管理员
         </div>
+        <el-button
+          type="primary"
+          style="margin-left:10px;font-size:12px;background-color:#99cccc;border-color: #99cccc;"
+          icon="el-icon-plus"
+        >门店申请</el-button>
       </el-header>
       <el-container class="right_side">
         <el-main class="centerbody">
