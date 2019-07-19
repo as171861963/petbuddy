@@ -54,6 +54,7 @@ export default {
             }
             else
             {
+              localStorage.setItem("_id",data[0]._id);
               this.$router.push(`/info`);
             }
           }
