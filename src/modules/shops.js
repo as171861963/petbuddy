@@ -33,7 +33,7 @@ export default {
             Object.assign(state.data,payload);
         },
         setPage(state,payload){
-            state.data.curPage = payload
+            state.data.curPage = payload;
         }
     },
     actions:{
@@ -45,8 +45,8 @@ export default {
             commit("setStatus",data); 
         },
         getShopsByPage(context,payload){
-           context.commit("setPage",payload); 
-           this._actions.getShopsAsync
+           context.commit("setPage",payload.curPage); 
+           this._actions.getShopsAsync(payload.managerId)
         }
     }
 }

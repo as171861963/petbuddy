@@ -58,6 +58,7 @@ export default {
             type: "success"
           });
           localStorage.setItem("user_name", data[0].username);
+          localStorage.setItem("_id", data[0]._id);
           if (data[0].identity === "平台管理员") {
             this.$router.push(`/platform`);
           } else {

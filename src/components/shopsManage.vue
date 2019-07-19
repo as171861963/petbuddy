@@ -94,7 +94,8 @@ export default {
         });
     },
     handleChange(page) {
-        this.getShopsByPage(page);      
+      const managerId = localStorage.getItem("_id");
+        this.getShopsByPage({ curPage:page,managerId });      
     },
     ...mapActions(["getShopsAsync","getShopsByPage"])
   }
