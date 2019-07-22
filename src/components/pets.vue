@@ -9,9 +9,28 @@
         @click="dialog('增加商品')"
       >增加</el-button>
       <el-button class="iconBtn" type="primary" icon="el-icon-edit" @click="dialog('修改商品')">修改</el-button>
-      <el-button class="iconBtn" type="primary" icon="el-icon-delete">删除</el-button>
+      <el-button
+        class="iconBtn"
+        type="primary"
+        icon="el-icon-delete"
+        @click="centerDialogVisible=true"
+      >删除</el-button>
+      <el-select v-model="value" filterable placeholder="请选择" style="width:110px;margin-left:10px;">
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        ></el-option>
+      </el-select>
       <el-input class="ipt" placeholder="请输入内容" v-model="pet" clearable></el-input>
-      <el-button class="iconBtn" style="margin-left: 10px;" type="primary" icon="el-icon-search">搜索</el-button>
+      <el-button
+        class="iconBtn"
+        style="margin-left: 10px;"
+        type="primary"
+        icon="el-icon-search"
+        @click="searchPet()"
+      >搜索</el-button>
       <el-button class="iconBtn" type="primary" icon="el-icon-refresh">刷新</el-button>
       <input type="radio" id="salesVolume" name="inputBtn" />
       <label for="salesVolume">按销量排序</label>
@@ -69,7 +88,7 @@
           <el-upload
             class="upload-demo"
             drag
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="/shops/fileup"
             multiple
           >
             <i class="el-icon-upload"></i>
@@ -90,7 +109,7 @@
     <!-- 商品详情表格 -->
     <el-table
       ref="multipleTable"
-      :data="tableData"
+      :data="rows"
       tooltip-effect="dark"
       class="myTable"
       @select="handleSelection"
@@ -98,23 +117,23 @@
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column type="expand" width="55">
         <template slot-scope="props">
-          <el-form label-position="left" inline class="demo-table-expand">
-            <el-form-item label="产地">
+          <el-form label-position="left" class="demo-table-expand">
+            <el-form-item label="产地：">
               <span>{{ props.row.addr }}</span>
             </el-form-item>
-            <el-form-item label="类型">
+            <el-form-item label="类型：">
               <span>{{ props.row.type }}</span>
             </el-form-item>
-            <el-form-item label="体型">
+            <el-form-item label="体型：">
               <span>{{ props.row.somatotype }}</span>
             </el-form-item>
-            <el-form-item label="疫苗">
+            <el-form-item label="疫苗：">
               <span>{{ props.row.vaccine }}</span>
             </el-form-item>
-            <el-form-item label="库存">
+            <el-form-item label="库存：">
               <span>{{ props.row.stock }}</span>
             </el-form-item>
-            <el-form-item label="商品描述">
+            <el-form-item label="描述：">
               <span>{{ props.row.describe }}</span>
             </el-form-item>
           </el-form>
@@ -127,44 +146,50 @@
       <el-table-column label="花色" prop="color"></el-table-column>
       <el-table-column label="价格" prop="price"></el-table-column>
     </el-table>
+
+    <el-dialog title="提示" :visible.sync="centerDialogVisible" width="30%" center>
+      <span>您确定删除该商品吗！</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="centerDialogVisible=false">取 消</el-button>
+        <el-button type="primary" @click="deletePet">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapActions, mapState } = createNamespacedHelpers("petsList");
 export default {
   data() {
     return {
-      btn: "",
-      addPet: false,
-      pet: "",
-      tableData: [
+      options: [
         {
-          name: "哈士奇",
-          type: "狗",
-          addr: "美国",
-          age: "1岁",
-          price: "1000",
-          color: "黑白",
-          gender: "公",
-          stock: "5",
-          somatotype: "中型犬",
-          vaccine: "已注射",
-          describe: "美国纯种柯基"
+          value: "name",
+          label: "商品名称"
         },
         {
-          name: "柯基",
-          type: "狗",
-          addr: "美国",
-          age: "0.5岁",
-          price: "1500",
-          color: "棕白",
-          gender: "母",
-          stock: "5",
-          somatotype: "中型犬",
-          vaccine: "已注射",
-          describe: "美国纯种柯基"
+          value: "price",
+          label: "价格"
+        },
+        {
+          value: "addr",
+          label: "产地"
+        },
+        {
+          value: "color",
+          label: "花色"
+        },
+        {
+          value: "gender",
+          label: "性别"
         }
       ],
+      value: "",
+      btn: "",
+      pet: "",
+      addPet: false,
+      centerDialogVisible: false,
       formLabelWidth: "120px",
       form: {
         name: "",
@@ -177,15 +202,53 @@ export default {
         stock: "",
         somatotype: "",
         vaccine: "",
-        describe: ""
+        describe: "",
+        managerId: ""
       },
       update: {}
     };
   },
+  computed: {
+    ...mapState(["rows"])
+  },
+  mounted() {
+    this.getPetsAsync(localStorage.getItem("_id"));
+  },
   methods: {
+    searchPet() {
+      if (this.pet != "") {
+        this.searchToPetAsync({
+          managerId: localStorage.getItem("_id"),
+          [this.value]: this.pet
+        });
+        return;
+      }
+      this.getPetsAsync(localStorage.getItem("_id"));
+    },
+    ...mapActions([
+      "addToPetAsync",
+      "getPetsAsync",
+      "updateToPetAsync",
+      "deleteToPetAsync",
+      "searchToPetAsync"
+    ]),
     addToPet() {
-      this.addPet = false;
-      this.tableData.push(this.form)
+      if (this.btn === "增加商品") {
+        const id = localStorage.getItem("_id");
+        this.form.managerId = id;
+        this.addToPetAsync(this.form);
+        this.getPetsAsync(localStorage.getItem("_id"));
+        this.addPet = false;
+      } else if (this.btn === "修改商品") {
+        this.updateToPetAsync(this.form);
+        this.getPetsAsync(localStorage.getItem("_id"));
+        this.addPet = false;
+      }
+    },
+    deletePet() {
+      this.centerDialogVisible = false;
+      this.deleteToPetAsync(this.update._id);
+      this.getPetsAsync(localStorage.getItem("_id"));
     },
     dialog(value) {
       this.addPet = true;
@@ -241,5 +304,8 @@ export default {
 }
 .myTable::-webkit-scrollbar {
   display: none;
+}
+.el-form-item {
+  margin-bottom: 10px;
 }
 </style>

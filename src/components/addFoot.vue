@@ -8,9 +8,28 @@
         @click="dialog('增加商品')"
       >增加</el-button>
       <el-button class="iconBtn" type="primary" icon="el-icon-edit" @click="dialog('修改商品')">修改</el-button>
-      <el-button class="iconBtn" type="primary" icon="el-icon-delete">删除</el-button>
-      <el-input class="ipt" placeholder="请输入内容" v-model="pet" clearable></el-input>
-      <el-button class="iconBtn" style="margin-left: 10px;" type="primary" icon="el-icon-search">搜索</el-button>
+      <el-button
+        class="iconBtn"
+        type="primary"
+        icon="el-icon-delete"
+        @click="centerDialogVisible=true"
+      >删除</el-button>
+      <el-select v-model="value" filterable placeholder="请选择" style="width:110px;margin-left:10px;">
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        ></el-option>
+      </el-select>
+      <el-input class="ipt" placeholder="请输入内容" v-model="foot" clearable></el-input>
+      <el-button
+        class="iconBtn"
+        style="margin-left: 10px;"
+        type="primary"
+        icon="el-icon-search"
+        @click="searchPet"
+      >搜索</el-button>
       <el-button class="iconBtn" type="primary" icon="el-icon-refresh">刷新</el-button>
       <input type="radio" id="salesVolume" name="inputBtn" />
       <label for="salesVolume">按销量排序</label>
@@ -21,7 +40,7 @@
     <!-- 商品详情表格 -->
     <el-table
       ref="multipleTable"
-      :data="tableData"
+      :data="rows"
       tooltip-effect="dark"
       class="mtable"
       @select="handleSelection"
@@ -29,7 +48,7 @@
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column type="expand" width="55">
         <template slot-scope="props">
-          <el-form label-position="left" inline class="demo-table-expand">
+          <el-form label-position="left" class="demo-table-expand">
             <el-form-item label="适用规格">
               <span>{{ props.row.for }}</span>
             </el-form-item>
@@ -150,57 +169,43 @@
         <el-button class="defineBtn" type="primary" @click="addToFoot">确 定</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog title="提示" :visible.sync="centerDialogVisible" width="30%" center>
+      <span>您确定删除该商品吗！</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="centerDialogVisible=false">取 消</el-button>
+        <el-button type="primary" @click="deleteFoot">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapActions, mapState } = createNamespacedHelpers("footList");
 export default {
   data() {
     return {
-      addFoot: false,
-      btn: "",
-      pet: "",
-      tableData: [
+      options: [
         {
-          _id: "5d302dfd9891e21e20db41b8",
-          name: "涛涛牌狗粮",
-          type: "狗粮",
-          texture: "宠物主食",
-          madeWay: "烘焙、膨化",
-          for: "大型犬",
-          sepcialFor: "金毛",
-          size: "1kg 5kg",
-          flavor: "鸡肉味",
-          feature: "美毛，去泪痕",
-          addr: "广州",
-          madeTime: "2019-03-14",
-          keepTime: "12个月",
-          brief: "源自深海海藻",
-          price: "308",
-          imgs: "123",
-          __v: 0
+          value: "name",
+          label: "商品名称"
         },
         {
-          _id: "5d302dfd9891e21e20db41b8",
-          name: "涛涛牌狗粮",
-          type: "狗粮",
-          texture: "宠物主食",
-          madeWay: "烘焙、膨化",
-          for: "大型犬",
-          sepcialFor: "金毛",
-          size: "1kg 5kg",
-          flavor: "鸡肉味",
-          feature: "美毛，去泪痕",
-          addr: "广州",
-          madeTime: "2019-03-14",
-          keepTime: "12个月",
-          brief: "源自深海海藻",
-          price: "308",
-          imgs: "123",
-          __v: 0
+          value: "price",
+          label: "价格"
+        },
+        {
+          value: "type",
+          label: "类型"
         }
       ],
+      value: "",
+      centerDialogVisible: false,
+      addFoot: false,
+      btn: "",
+      foot: "",
       form: {
         name: "",
         type: "",
@@ -221,11 +226,47 @@ export default {
       update: {}
     };
   },
-
+  computed: {
+    ...mapState(["rows"])
+  },
+  mounted() {
+    this.getFootsAsync(localStorage.getItem("_id"));
+  },
   methods: {
+    ...mapActions([
+      "addToFootAsync",
+      "getFootsAsync",
+      "updateToFootAsync",
+      "deleteToFootAsync",
+      "searchToFootAsync"
+    ]),
     addToFoot() {
-      this.addFoot = false;
-      this.tableData.push(this.form);
+      if (this.btn === "增加商品") {
+        const id = localStorage.getItem("_id");
+        this.form.managerId = id;
+        this.addToFootAsync(this.form);
+        this.getFootsAsync(localStorage.getItem("_id"));
+        this.addFoot = false;
+      } else if (this.btn === "修改商品") {
+        this.updateToFootAsync(this.form);
+        this.getFootsAsync(localStorage.getItem("_id"));
+        this.addFoot = false;
+      }
+    },
+    searchPet() {
+      if (this.foot != "") {
+        this.searchToFootAsync({
+          managerId: localStorage.getItem("_id"),
+          [this.value]: this.foot
+        });
+        return;
+      }
+      this.getFootsAsync(localStorage.getItem("_id"));
+    },
+    deleteFoot() {
+      this.centerDialogVisible = false;
+      this.deleteToFootAsync(this.update._id);
+      this.getFootsAsync(localStorage.getItem("_id"));
     },
     dialog(value) {
       this.addFoot = true;
@@ -281,6 +322,12 @@ export default {
 }
 .mtable::-webkit-scrollbar {
   display: none;
+}
+.el-table::before {
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 0px;
 }
 </style>
 
