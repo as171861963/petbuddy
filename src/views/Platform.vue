@@ -35,7 +35,7 @@
         </template>
         <el-menu-item-group>
           <span slot="title" style="color:white;font-size:16px;">设置</span>
-          <el-menu-item index style="font-size:12px;">注销</el-menu-item>
+          <el-menu-item index style="font-size:12px;" @click="cancellation">注销</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
     </el-menu>
@@ -74,6 +74,10 @@ export default {
     };
   },
   methods: {
+    cancellation() {
+      localStorage.clear();
+      location.hash = "/";
+    },
     formattime(date) {
       const y = date.getFullYear();
       const mm = date.getMonth() + 1;
@@ -95,7 +99,7 @@ i {
 }
 .left {
   border-right: 1px solid lightgray;
-  display:flex;
+  display: flex;
   flex-direction: column;
 }
 .mheader {
