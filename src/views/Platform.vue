@@ -18,23 +18,13 @@
         </el-menu-item-group>
       </el-submenu>
 
-      <el-submenu index="2">
-        <template slot="title">
-          <i class="el-icon-menu"></i>
-        </template>
-        <el-menu-item-group>
-          <span slot="title" style="color:white;font-size:16px;">门店管理</span>
-          <el-menu-item index="/platform/shopManage" style="font-size:12px;">门店信息</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
-
       <el-submenu index="3">
         <template slot="title">
           <i class="el-icon-user-solid"></i>
         </template>
         <el-menu-item-group>
           <span slot="title" style="color:white;font-size:16px;">用户管理</span>
-          <el-menu-item index style="font-size:12px;">用户信息</el-menu-item>
+          <el-menu-item index="/platform/userManage" style="font-size:12px;">用户信息</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
 

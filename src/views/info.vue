@@ -13,7 +13,8 @@
           <i class="el-icon-menu"></i>
         </template>
         <el-menu-item-group>
-          <span slot="title" style="color:white;font-size:16px;">门店管理</span>
+          <span slot="title" style="color:white;font-size:16px;">管理</span>
+          <el-menu-item index="/info/shopManage" style="font-size:12px;">门店</el-menu-item>
           <el-menu-item index="/info/pets" style="font-size:12px;">宠物</el-menu-item>
           <el-menu-item index="/info/addFood" style="font-size:12px;">食品</el-menu-item>
           <!-- <el-menu-item index="1-2">用品</el-menu-item> -->
@@ -26,8 +27,8 @@
           <i class="el-icon-s-order"></i>
         </template>
         <el-menu-item-group>
-          <span slot="title" style="color:white;font-size:16px;">订单管理</span>
-          <el-menu-item index="/info/order" style="font-size:12px;">我的订单</el-menu-item>
+          <span slot="title" style="color:white;font-size:16px;">订单</span>
+          <el-menu-item index="/info/order" style="font-size:12px;">列表</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
 
@@ -36,8 +37,8 @@
           <i class="el-icon-orange"></i>
         </template>
         <el-menu-item-group>
-          <span slot="title" style="color:white;font-size:16px;">活动管理</span>
-          <el-menu-item index style="font-size:12px;">店铺活动</el-menu-item>
+          <span slot="title" style="color:white;font-size:16px;">活动</span>
+          <el-menu-item index style="font-size:12px;">列表</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
 

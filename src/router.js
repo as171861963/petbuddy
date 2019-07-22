@@ -33,9 +33,9 @@ export default new Router({
           component: () => import(/* webpackChunkName: "about" */ './components/messages.vue'),
         },
         {
-          path: '/platform/shopManage',
-          name: 'shopManage',
-          component: () => import(/* webpackChunkName: "about" */ './components/shopsManage.vue'),
+          path: '/platform/userManage',
+          name: 'userManage',
+          component: () => import(/* webpackChunkName: "about" */ './components/userManage.vue'),
         }
       ]
     },
@@ -48,6 +48,11 @@ export default new Router({
           path: '/info/',
           name: 'hello',
           component: () => import(/* webpackChunkName: "about" */ './components/Hello.vue'),
+        },
+        {
+          path: '/info/shopManage',
+          name: 'shopManage2',
+          component: () => import(/* webpackChunkName: "about" */ './components/shopsManage.vue'),
         },
         {
           path: '/info/shopservice',

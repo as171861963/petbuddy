@@ -1,26 +1,23 @@
 <template>
   <div>
-    <el-table :data="message" stripe class="mtable">
+    <el-table :data="info.rows" stripe class="mtable">
       <el-table-column type="expand">
-        <template slot-scope="">
+        <template slot-scope="props">
           <el-form label-position="left" flex class="demo-table-expand">
             <el-form-item label="营业时间">
-              <span>09:00-18:00</span>
-            </el-form-item>
-            <el-form-item label="状态:">
-              <span>待审核</span>
+              <span>{{formatTime(props.row.startTime)}}-{{formatTime(props.row.endTime)}}</span>
             </el-form-item>
             <el-form-item label="面积:">
-              <span>211</span>
+              <span>{{props.row.area}}</span>
             </el-form-item>
             <el-form-item label="WIFI:">
-              <span>有</span>
+              <span>{{props.row.wifi}}</span>
             </el-form-item>
             <el-form-item label="停车:">
-              <span>可停车</span>
+              <span>{{props.row.parking}}</span>
             </el-form-item>
             <el-form-item label="门店简介:">
-              <span> lovely home for every cute petsa lovely home for every cute petsa lovely home for every cute pets</span>
+              <span>{{props.row.brief}}</span>
             </el-form-item>
           </el-form>
         </template>
@@ -30,77 +27,37 @@
       <el-table-column prop="contact" label="联系人"></el-table-column>
       <el-table-column prop="phone" label="联系电话"></el-table-column>
       <el-table-column prop="addr" label="地址"></el-table-column>
+      <el-table-column prop="status" label="状态"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          <el-button size="mini" type="danger" 
+          @click="handleDelete(scope.$index, scope.row)" 
+          :disabled="scope.row.status === '不可用'">关闭该店</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <div class="pagi">
-      <el-pagination
-        background
-        :page-size="6"
-        layout="pager"
-        :total="message.length"
-        @current-change="handleChange"
-      ></el-pagination>
-    </div>
   </div>
 </template>
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapActions, mapState } = createNamespacedHelpers("shops");
+
 export default {
-  data() {
-    return {
-      message: [
-        {
-          name: "淘淘宠物店",
-          type: "宠物店",
-          contact: "陈涛",
-          phone: "18182339945",
-          addr: "成都市青羊区"
-        },
-        {
-          name: "淘淘宠物店",
-          type: "宠物店",
-          contact: "陈涛",
-          phone: "18182339945",
-          addr: "成都市青羊区"
-        },
-        {
-          name: "淘淘宠物店",
-          type: "宠物店",
-          contact: "陈涛",
-          phone: "18182339945",
-          addr: "成都市青羊区"
-        },
-        {
-          name: "淘淘宠物店",
-          type: "宠物店",
-          contact: "陈涛",
-          phone: "18182339945",
-          addr: "成都市青羊区"
-        },
-        {
-          name: "淘淘宠物店",
-          type: "宠物店",
-          contact: "陈涛",
-          phone: "18182339945",
-          addr: "成都市青羊区"
-        },
-        {
-          name: "淘淘宠物店",
-          type: "宠物店",
-          contact: "陈涛",
-          phone: "18182339945",
-          addr: "成都市青羊区"
-        }
-      ]
-    };
+  mounted(){
+    const managerId = localStorage.getItem("_id");
+    this.getShopsAsync(managerId);
+  },
+  computed:{
+    ...mapState({ info:"data" })
   },
   methods: {
-    handleEdit(index, row) {},
-    handleDelete() {
+    formatTime(DateString){
+      const date = new Date(DateString);
+      const h = date.getHours();
+      const m = date.getMinutes();
+      return `${h}:${m}`;
+    },
+    handleDelete(index,row) {
       this.$confirm("是否删除？此操作不可逆！", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -108,31 +65,19 @@ export default {
         center: true
       })
         .then(() => {
-          this.$message({
-            type: "success",
-            message: "已删除!"
-          });
+          this.changeShopStatusAsync(row)
+
         })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "！！！"
-          });
-        });
     },
-    handleChange(page) {}
+    ...mapActions(["getShopsAsync","changeShopStatusAsync"])
   }
 };
 </script>
 
 <style scoped>
-.pagi {
-  margin-top: 30px;
-  text-align: center;
-}
 .mtable {
   width: 100%;
-  height: 470px;
+  height: 550px;
   overflow-y: scroll;
 }
 .mtable::-webkit-scrollbar {
