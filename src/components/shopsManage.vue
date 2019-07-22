@@ -7,9 +7,6 @@
             <el-form-item label="营业时间">
               <span>{{formatTime(props.row.startTime)}}-{{formatTime(props.row.endTime)}}</span>
             </el-form-item>
-            <el-form-item label="状态:">
-              <span>{{props.row.status}}</span>
-            </el-form-item>
             <el-form-item label="面积:">
               <span>{{props.row.area}}</span>
             </el-form-item>
@@ -30,22 +27,15 @@
       <el-table-column prop="contact" label="联系人"></el-table-column>
       <el-table-column prop="phone" label="联系电话"></el-table-column>
       <el-table-column prop="addr" label="地址"></el-table-column>
+      <el-table-column prop="status" label="状态"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          <el-button size="mini" type="danger" 
+          @click="handleDelete(scope.$index, scope.row)" 
+          :disabled="scope.row.status === '不可用'">关闭该店</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <div class="pagi">
-      <el-pagination
-        background
-        :page-size="6"
-        layout="pager"
-        :total="info.total"
-        @current-change="handleChange"
-      ></el-pagination>
-    </div>
   </div>
 </template>
 <script>
@@ -57,23 +47,17 @@ export default {
     const managerId = localStorage.getItem("_id");
     this.getShopsAsync(managerId);
   },
-  data() {
-    return {
-      
-    };
-  },
   computed:{
     ...mapState({ info:"data" })
   },
   methods: {
-    handleEdit(index, row) {},
     formatTime(DateString){
       const date = new Date(DateString);
       const h = date.getHours();
       const m = date.getMinutes();
       return `${h}:${m}`;
     },
-    handleDelete() {
+    handleDelete(index,row) {
       this.$confirm("是否删除？此操作不可逆！", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -81,35 +65,19 @@ export default {
         center: true
       })
         .then(() => {
-          this.$message({
-            type: "success",
-            message: "已删除!"
-          });
+          this.changeShopStatusAsync(row)
+
         })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "！！！"
-          });
-        });
     },
-    handleChange(page) {
-      const managerId = localStorage.getItem("_id");
-        this.getShopsByPage({ curPage:page,managerId });      
-    },
-    ...mapActions(["getShopsAsync","getShopsByPage"])
+    ...mapActions(["getShopsAsync","changeShopStatusAsync"])
   }
 };
 </script>
 
 <style scoped>
-.pagi {
-  margin-top: 30px;
-  text-align: center;
-}
 .mtable {
   width: 100%;
-  height: 470px;
+  height: 550px;
   overflow-y: scroll;
 }
 .mtable::-webkit-scrollbar {

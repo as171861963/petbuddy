@@ -2,8 +2,8 @@ import axios from "axios";
 
 export default {
 
-    async getShops(params){
-        return await axios.get(`/shops/${params}`);
+    async getMessages(){
+        return await axios.get(`/shops/status/unhandled`);
     },
 
     async changeShopStatus(params){
