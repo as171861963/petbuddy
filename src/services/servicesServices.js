@@ -12,6 +12,13 @@ export default {
 
     async getServicesByManagerId(params){
         return await axios.get(`/services/${params}`);
-    }
+    },
 
+    async deleteServiceById(params){
+        return await axios.delete(`/services/${params}`);
+    },
+
+    async updateServiceAsync(params){
+        return await axios.put(`/services`,params);
+    },
 }
