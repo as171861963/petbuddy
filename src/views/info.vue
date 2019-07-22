@@ -8,7 +8,8 @@
       active-text-color="#FFCC99"
       router
     >
-      <el-submenu index="1">
+      <div class="top">
+        <el-submenu index="1">
         <template slot="title">
           <i class="el-icon-menu"></i>
         </template>
@@ -41,14 +42,15 @@
           <el-menu-item index style="font-size:12px;">列表</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
+      </div>
 
-      <el-submenu index="4">
+      <el-submenu index="4" style="">
         <template slot="title">
           <i class="el-icon-setting"></i>
         </template>
         <el-menu-item-group>
           <span slot="title" style="color:white;font-size:16px;">设置</span>
-          <el-menu-item index style="font-size:12px;">注销</el-menu-item>
+          <el-menu-item index style="font-size:12px;" @click="cancellation">注销</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
     </el-menu>
@@ -65,7 +67,7 @@
           <i class="gap"></i>门店管理员
         </div>
         <el-button
-        @click="addApplyShop"
+          @click="addApplyShop"
           type="primary"
           style="margin-left:10px;font-size:12px;background-color:#99cccc;border-color: #99cccc;"
           icon="el-icon-plus"
@@ -94,8 +96,12 @@ export default {
     };
   },
   methods: {
-    addApplyShop(){
-      location.hash="/info/applyShop"
+    cancellation() {
+      localStorage.clear();
+      location.hash = "/";
+    },
+    addApplyShop() {
+      location.hash = "/info/applyShop";
     },
     formattime(date) {
       const y = date.getFullYear();
@@ -114,10 +120,12 @@ i {
 }
 .outside {
   display: flex;
-  height: 700px;
+  height: 744px;
 }
 .left {
   border-right: 1px solid lightgray;
+  display: flex;
+  flex-direction: column;
 }
 .mheader {
   border: 1px solid #eee;
@@ -156,5 +164,11 @@ i {
 }
 .centerbody {
   padding: 20px;
+}
+.top{
+  flex-grow: 1;
+}
+.el-icon-arrow-right:before{
+content: none;
 }
 </style>

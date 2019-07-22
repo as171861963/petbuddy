@@ -8,26 +8,27 @@
       active-text-color="#FFCC99"
       router
     >
-      <el-submenu index="1">
-        <template slot="title">
-          <i class="el-icon-message"></i>
-        </template>
-        <el-menu-item-group>
-          <span slot="title" style="color:white;font-size:16px;">信息管理</span>
-          <el-menu-item index="/platform/message" style="font-size:12px;">信息中心</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
+      <div style="flex-grow:1">
+        <el-submenu index="1">
+          <template slot="title">
+            <i class="el-icon-message"></i>
+          </template>
+          <el-menu-item-group>
+            <span slot="title" style="color:white;font-size:16px;">信息管理</span>
+            <el-menu-item index="/platform/message" style="font-size:12px;">信息中心</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
 
-      <el-submenu index="3">
-        <template slot="title">
-          <i class="el-icon-user-solid"></i>
-        </template>
-        <el-menu-item-group>
-          <span slot="title" style="color:white;font-size:16px;">用户管理</span>
-          <el-menu-item index="/platform/userManage" style="font-size:12px;">用户信息</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
-
+        <el-submenu index="3">
+          <template slot="title">
+            <i class="el-icon-user-solid"></i>
+          </template>
+          <el-menu-item-group>
+            <span slot="title" style="color:white;font-size:16px;">用户管理</span>
+            <el-menu-item index="/platform/userManage" style="font-size:12px;">用户信息</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
+      </div>
       <el-submenu index="4">
         <template slot="title">
           <i class="el-icon-setting"></i>
@@ -94,6 +95,8 @@ i {
 }
 .left {
   border-right: 1px solid lightgray;
+  display:flex;
+  flex-direction: column;
 }
 .mheader {
   border: 1px solid #eee;

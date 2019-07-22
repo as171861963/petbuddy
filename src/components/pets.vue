@@ -32,9 +32,9 @@
         @click="searchPet()"
       >搜索</el-button>
       <el-button class="iconBtn" type="primary" icon="el-icon-refresh">刷新</el-button>
-      <input type="radio" id="salesVolume" name="inputBtn" />
+      <input type="radio" id="salesVolume" name="inputBtn" @focus="sort('color')" />
       <label for="salesVolume">按销量排序</label>
-      <input type="radio" id="price" name="inputBtn" />
+      <input type="radio" id="price" name="inputBtn" @focus="sort('price')" />
       <label for="price">按价格排序</label>
     </div>
     <!-- 隐藏的添加表单 -->
@@ -88,7 +88,8 @@
           <el-upload
             class="upload-demo"
             drag
-            action="/shops/fileup"
+            action="/pets/fileupload"
+            :on-success="imgUrl"
             multiple
           >
             <i class="el-icon-upload"></i>
@@ -100,7 +101,6 @@
           </el-upload>
         </el-form-item>
       </el-form>
-
       <div slot="footer" class="dialog-footer">
         <el-button @click="addPet = false">取 消</el-button>
         <el-button class="defineBtn" type="primary" @click="addToPet">确 定</el-button>
@@ -118,6 +118,9 @@
       <el-table-column type="expand" width="55">
         <template slot-scope="props">
           <el-form label-position="left" class="demo-table-expand">
+            <el-form-item label="图片：">
+              <img :src=" props.row.imgs" alt="pet" style="width:150px;" />
+            </el-form-item>
             <el-form-item label="产地：">
               <span>{{ props.row.addr }}</span>
             </el-form-item>
@@ -203,7 +206,8 @@ export default {
         somatotype: "",
         vaccine: "",
         describe: "",
-        managerId: ""
+        managerId: "",
+        imgs: ""
       },
       update: {}
     };
@@ -212,7 +216,7 @@ export default {
     ...mapState(["rows"])
   },
   mounted() {
-    this.getPetsAsync(localStorage.getItem("_id"));
+    this.getPetsAsync({_id:localStorage.getItem("_id")});
   },
   methods: {
     searchPet() {
@@ -224,6 +228,9 @@ export default {
         return;
       }
       this.getPetsAsync(localStorage.getItem("_id"));
+    },
+    sort(key) {
+        this.getPetsAsync({_id:localStorage.getItem("_id"), key});
     },
     ...mapActions([
       "addToPetAsync",
@@ -244,6 +251,9 @@ export default {
         this.getPetsAsync(localStorage.getItem("_id"));
         this.addPet = false;
       }
+    },
+    imgUrl(response, file, fileList) {
+      this.form.imgs = response.url;
     },
     deletePet() {
       this.centerDialogVisible = false;

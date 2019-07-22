@@ -31,9 +31,9 @@
         @click="searchPet"
       >搜索</el-button>
       <el-button class="iconBtn" type="primary" icon="el-icon-refresh">刷新</el-button>
-      <input type="radio" id="salesVolume" name="inputBtn" />
+      <input type="radio" id="salesVolume" name="inputBtn" @focus="sort('color')" />
       <label for="salesVolume">按销量排序</label>
-      <input type="radio" id="price" name="inputBtn" />
+      <input type="radio" id="price" name="inputBtn" @focus="sort('price')" />
       <label for="price">按价格排序</label>
     </div>
 
@@ -49,6 +49,9 @@
       <el-table-column type="expand" width="55">
         <template slot-scope="props">
           <el-form label-position="left" class="demo-table-expand">
+            <el-form-item label="图片">
+              <img :src=" props.row.imgs" alt="pet" style="width:100px;" />
+            </el-form-item>
             <el-form-item label="适用规格">
               <span>{{ props.row.for }}</span>
             </el-form-item>
@@ -151,7 +154,8 @@
           <el-upload
             class="upload-demo"
             drag
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="/foots/fileupload"
+            :on-success="imgUrl"
             multiple
           >
             <i class="el-icon-upload"></i>
@@ -230,7 +234,7 @@ export default {
     ...mapState(["rows"])
   },
   mounted() {
-    this.getFootsAsync(localStorage.getItem("_id"));
+    this.getFootsAsync({_id:localStorage.getItem("_id")});
   },
   methods: {
     ...mapActions([
@@ -240,6 +244,9 @@ export default {
       "deleteToFootAsync",
       "searchToFootAsync"
     ]),
+    imgUrl(response, file, fileList) {
+      this.form.imgs = response.url;
+    },
     addToFoot() {
       if (this.btn === "增加商品") {
         const id = localStorage.getItem("_id");
@@ -252,6 +259,9 @@ export default {
         this.getFootsAsync(localStorage.getItem("_id"));
         this.addFoot = false;
       }
+    },
+    sort(key) {
+      this.getFootsAsync({ _id: localStorage.getItem("_id"), key });
     },
     searchPet() {
       if (this.foot != "") {
@@ -324,10 +334,10 @@ export default {
   display: none;
 }
 .el-table::before {
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 0px;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 0px;
 }
 </style>
 

@@ -28,7 +28,7 @@ export default {
         },
         async getPetsAsync(context, payload) {
             const { start, count } = context.state
-            const { data } = await petsApi.getPets({ start, count, managerId: payload })
+            const { data } = await petsApi.getPets({ start, count, managerId: payload._id, key: payload.key })
             context.commit("getPets", data)
         },
     }

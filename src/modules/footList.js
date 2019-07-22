@@ -28,7 +28,7 @@ export default {
         },
         async getFootsAsync(context, payload) {
             const { start, count } = context.state
-            const { data } = await footsApi.getFoots({ start, count, managerId: payload })
+            const { data } = await footsApi.getFoots({ start, count, managerId: payload._id, key: payload.key })
             context.commit("getFoots", data)
         },
     }

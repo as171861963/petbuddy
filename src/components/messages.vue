@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 style="text-align:center">门店审核</h1>
-    <el-table :data="rows" stripe style="width: 100%;height:550px;">
+    <el-table :data="rows" stripe style="width: 100%;">
       <el-table-column prop="name" label="门店名称" width="180"></el-table-column>
       <el-table-column prop="type" label="门店类型" width="180"></el-table-column>
       <el-table-column prop="contact" label="联系人"></el-table-column>

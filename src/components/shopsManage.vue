@@ -77,7 +77,7 @@ export default {
 <style scoped>
 .mtable {
   width: 100%;
-  height: 550px;
+  height: 498px;
   overflow-y: scroll;
 }
 .mtable::-webkit-scrollbar {
