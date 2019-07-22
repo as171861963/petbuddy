@@ -8,7 +8,6 @@
       active-text-color="#FFCC99"
       router
     >
-      <div style="flex-grow:1">
         <el-submenu index="1">
           <template slot="title">
             <i class="el-icon-message"></i>
@@ -28,8 +27,8 @@
             <el-menu-item index="/platform/userManage" style="font-size:12px;">用户信息</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
-      </div>
-      <el-submenu index="4">
+
+      <el-submenu index="4" style="position:absolute;bottom:0px;">
         <template slot="title">
           <i class="el-icon-setting"></i>
         </template>
@@ -95,12 +94,10 @@ i {
 }
 .outside {
   display: flex;
-  height: 700px;
+  height: 744px;
 }
 .left {
   border-right: 1px solid lightgray;
-  display: flex;
-  flex-direction: column;
 }
 .mheader {
   border: 1px solid #eee;
