@@ -36,7 +36,7 @@ export default new Router({
       children:[
         {
           path: '/platform/',
-          name: 'platform',
+          name: 'platformhello',
           component: () => import(/* webpackChunkName: "about" */ './components/Hello.vue'),
         },
         {

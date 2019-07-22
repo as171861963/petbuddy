@@ -154,7 +154,7 @@
           <el-upload
             class="upload-demo"
             drag
-            action="/foots/fileupload"
+            action="/shops/fileupload"
             :on-success="imgUrl"
             multiple
           >

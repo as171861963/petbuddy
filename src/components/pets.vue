@@ -88,7 +88,7 @@
           <el-upload
             class="upload-demo"
             drag
-            action="/pets/fileupload"
+            action="/shops/fileupload"
             :on-success="imgUrl"
             multiple
           >

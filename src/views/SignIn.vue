@@ -67,46 +67,23 @@ export default {
   },
   methods: {
     handleClick() {
-      if (this.verifyForm()) {
-        this.signInAsync({
-          username: this.userValue,
-          password: this.pwdValue,
-          phone: this.phoneValue,
-          email: this.emailValue,
-          name: this.nameValue,
-          identity: this.identity,
-          status: "审核中"
-        }).then(data => {
-          if (data._id) {
-            this.$message({
-              message: "恭喜你，注册成功",
-              type: "success"
-            });
-            this.$router.push(`/login/${data.username}`)
-          }
-        });
-      }
-    },
-    verifyForm() {
-      if (!/^(?![$_`])\w{2,}$/.test(this.userValue)) {
-        return false;
-      }
-      if (!/^(?!0)\w{6,}$/.test(this.pwdValue)) {
-        return false;
-      }
-      if (this.pwdValue !== this.pwdValue2) {
-        return false;
-      }
-      if (!/^1[345678]\d{9,}$/.test(this.phoneValue)) {
-        return false;
-      }
-      if (!/^\w+@\w+(.\w+)+$/.test(this.emailValue)) {
-        return false;
-      }
-      if (!/^[\u4e00-\u9fa5]{2,6}$/.test(this.nameValue)) {
-        return false;
-      }
-      return true;
+      this.signInAsync({
+        username: this.userValue,
+        password: this.pwdValue,
+        phone: this.phoneValue,
+        email: this.emailValue,
+        name: this.nameValue,
+        identity: this.identity,
+        status: "审核中"
+      }).then(data => {
+        if (data._id) {
+          this.$message({
+            message: "恭喜你，注册成功",
+            type: "success"
+          });
+          this.$router.push(`/login/${data.username}`);
+        }
+      });
     },
     ...mapActions(["signInAsync"])
   }
