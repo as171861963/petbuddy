@@ -39,8 +39,8 @@ export default {
   },
   data() {
     return {
-      userValue: "stuart",
-      pwdValue: "1234"
+      userValue: "jack",
+      pwdValue: "123456"
     };
   },
   methods: {
@@ -52,14 +52,14 @@ export default {
         username: this.userValue,
         password: this.pwdValue
       }).then(data => {
-        if (data.length === 1) {
+        if (data.success) {
           this.$message({
             message: "登陆成功",
             type: "success"
           });
-          localStorage.setItem("user_name", data[0].username);
-          localStorage.setItem("_id", data[0]._id);
-          if (data[0].identity === "平台管理员") {
+          localStorage.setItem("user_name", data.username);
+          localStorage.setItem("_id", data._id);
+          if (data.identity === "平台管理员") {
             this.$router.push(`/platform`);
           } else {
             this.$router.push(`/info`);
@@ -76,9 +76,10 @@ export default {
 .loginBox{
   width:100%;
   height:650px;
-  background: url("../assets/login_img.jpg") center ;
-  background-repeat: no-repeat;
-  background-size:94% 650px;
+  background-image: url("../assets/login_img.jpg");
+  background-size: auto 650px;
+  margin-top: 100px;
+  position: relative;
 }
 .inputbox {
   padding: 0 50px 20px;
@@ -98,10 +99,9 @@ export default {
 .box-card {
   position: absolute;
   right:140px;
-  top:85px;
+  top:140px;
   width: 400px;
   height:320px;
-  margin: 0px auto;
 }
 .signbtn {
   margin-left: 10px;

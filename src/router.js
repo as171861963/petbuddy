@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Router from "vue-router";
 import Login from "./views/Login";
-// import ApplyShop from "./applyShop/applyShop"
 
 Vue.use(Router)
 
@@ -26,6 +25,14 @@ export default new Router({
       path: '/platform',
       name: 'platform',
       component: () => import(/* webpackChunkName: "about" */ './views/Platform.vue'),
+      beforeEnter: (to, from, next) => {
+        if(!localStorage.getItem("user_name")){
+          next("/")
+        }
+        else{
+          next();
+        }
+      },
       children:[
         {
           path: '/platform/',
@@ -48,6 +55,14 @@ export default new Router({
       path: '/info',
       name: 'info',
       component: () => import(/* webpackChunkName: "about" */ './views/info.vue'),
+      beforeEnter: (to, from, next) => {
+        if(!localStorage.getItem("user_name")){
+          next("/")
+        }
+        else{
+          next();
+        }
+      },
       children:[
         {
           path: '/info/',
