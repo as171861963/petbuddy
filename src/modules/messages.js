@@ -14,8 +14,8 @@ export default {
         }
     },
     actions:{
-        async getMessagesAsync({commit}){
-            const {data} = await messagesApi.getMessages();
+        async getMessagesAsync({commit},payload){
+            const {data} = await messagesApi.getMessages(payload);
             commit("combineRows",data)
         },
 
