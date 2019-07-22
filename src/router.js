@@ -28,6 +28,11 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/Platform.vue'),
       children:[
         {
+          path: '/platform/',
+          name: 'platform',
+          component: () => import(/* webpackChunkName: "about" */ './components/Hello.vue'),
+        },
+        {
           path: '/platform/message',
           name: 'message',
           component: () => import(/* webpackChunkName: "about" */ './components/messages.vue'),

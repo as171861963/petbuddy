@@ -2,39 +2,38 @@
   <div>
     <!-- 顶部按钮 -->
     <div style="margin-top: 20px">
-      <el-button class="iconBtn" type="primary" @click="dialogFormVisible = true">增加项目</el-button>
+      <el-button class="iconBtn" type="primary" @click="dialogFormVisible = true;title='新增服务'">增加项目</el-button>
     </div>
     <!-- 表格 -->
     <div class="scrollcontain">
-      <template v-for="item in shopServices">
+      <template v-for="(item) in shopServices">
         <el-card class="cbody" :key="item._id">
-          <img
-            :src="'http://172.20.10.3:3000' + item.imgs"
-            class="image"
-          />
+          <img :src="item.imgs" class="image" />
           <div>
             <div class="des">
               <div class="shortinfo">
                 <span>{{item.name}}</span>
                 <span>{{item.brief}}</span>
-                <span>{{item.startTime}}-{{item.endTime}}</span>
+                <span>{{item.costTime}}分钟</span>
+              </div>
+              <span>{{item.type}}</span>
+              <span>{{formatTime(item.startTime)}}-{{formatTime(item.endTime)}}</span>
+              <div class="bottom_info">
+                <span>{{item.shopId.name}}</span>
                 <span>￥{{item.price}}</span>
               </div>
-              <span>{{item.timeGap}}</span>
-              <span>{{item.type}}</span>
-              <span>{{item.shopId.name}}</span>
             </div>
             <div class="btns">
-              <el-button type="text" @click="handleEdit(item._id)">编辑</el-button>
-              <el-button type="text" @click="handleDelete(item._id)">删除</el-button>
+              <el-button type="text" @click="handleEdit(item)">编辑</el-button>
+              <el-button type="text" @click="handleDelete(item)">删除</el-button>
             </div>
           </div>
         </el-card>
       </template>
     </div>
-    <el-dialog title="新增项目" :visible.sync="dialogFormVisible">
+    <el-dialog :title="title" :visible.sync="dialogFormVisible">
       <div class="container">
-        <h1>创建服务</h1>
+        <h1>{{title}}</h1>
         <el-form :model="form" ref="formref" label-width="100px" class="demo-ruleForm applyShop">
           <el-form-item label="服务名称" prop="name" class="input">
             <el-input v-model="form.name"></el-input>
@@ -91,7 +90,7 @@
             </el-col>
           </el-form-item>
           <el-form-item class="type">
-            <el-button type="primary" class="subBtn" @click="handleSubmit()">立即创建</el-button>
+            <el-button type="primary" class="subBtn" @click="handleSubmit">提交</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -125,27 +124,53 @@ export default {
         shopId: ""
       },
       shops: [],
-      dialogFormVisible: false
+      dialogFormVisible: false,
+      title:""
     };
   },
-  computed:{
+  computed: {
     ...mapState(["shopServices"])
   },
   methods: {
-    handleEdit(_id) {
-      console.log(_id);
+    formatTime(DateString) {
+      const date = new Date(DateString);
+      const h = date.getHours();
+      const m = date.getMinutes();
+      return `${h < 10 ? "0" + h : h}:${m < 10 ? "0" + m : m}`;
     },
-    handleDelete(_id) {
-      console.log(_id);
+    handleEdit(item) {
+      Object.assign(this.form,item,{
+        managerId:item.managerId._id,
+        shopId:item.shopId._id,
+      });
+      this.dialogFormVisible = true;
+      this.title='修改服务';
+    },
+    async handleDelete(_id) {
+      const result = await this.deleteServiceByIdAsync(_id);
+      if (result) {
+        this.getServicesByManagerIdAsync(localStorage.getItem("_id"));
+        this.$message({
+          message: "删除成功",
+          type: "success"
+        });
+      }
     },
     async handleSubmit() {
-      const data = await this.addServiceAsync(this.form);
-      if (data.status === 200) {
-        this.dialogFormVisible = false;
-        this.$refs.formref.resetFields();
-        this.$refs.mupload.clearFiles();
+      let data = false;
+      if(this.title === "新增服务"){
+        data = await this.addServiceAsync(this.form);
+      }
+      else{
+        data = await this.updateServiceAsync(this.form);
+      }
+      this.dialogFormVisible = false;
+      this.$refs.formref.resetFields();
+      this.$refs.mupload.clearFiles();
+      if (data) {
+        this.getServicesByManagerIdAsync(localStorage.getItem("_id"));
         this.$message({
-          message: "恭喜你，添加成功",
+          message: "操作成功",
           type: "success"
         });
       }
@@ -153,7 +178,13 @@ export default {
     imgsSuccess({ url }) {
       this.form.imgs = url;
     },
-    ...mapActions(["getShopsByManagerIdAsync", "addServiceAsync","getServicesByManagerIdAsync"])
+    ...mapActions([
+      "getShopsByManagerIdAsync",
+      "addServiceAsync",
+      "getServicesByManagerIdAsync",
+      "deleteServiceByIdAsync",
+      "updateServiceAsync"
+    ])
   }
 };
 </script>
@@ -207,7 +238,7 @@ export default {
   overflow: scroll;
 }
 .scrollcontain > * {
-  margin: 25px;
+  margin: 20px;
 }
 .scrollcontain::-webkit-scrollbar {
   display: none;
@@ -242,5 +273,9 @@ h1 {
 }
 .subBtn {
   width: 398px;
+}
+.bottom_info {
+  display: flex;
+  justify-content: space-between;
 }
 </style>
