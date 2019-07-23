@@ -317,4 +317,7 @@ export default {
 .el-form-item {
   margin-bottom: 10px;
 }
+.el-table::before {
+    height: 0px;
+}
 </style>
