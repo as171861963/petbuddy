@@ -28,6 +28,7 @@
           drag
           action="/shops/fileupload"
           :on-success="licenseSuccess"
+          ref="licenseRef"
           multiple
         >
           <i class="el-icon-upload"></i>
@@ -43,6 +44,7 @@
           class="upload-demo"
           drag
           action="/shops/fileupload"
+          ref="imgRef"
           multiple
           :on-success="imgsSuccess"
         >
@@ -92,7 +94,9 @@
 </template>
 
 <script>
-import axios from "axios";
+import { createNamespacedHelpers } from "vuex";
+const { mapActions } = createNamespacedHelpers("shops");
+
 export default {
   mounted() {
     this.newShop.managerId = localStorage.getItem("_id");
@@ -100,19 +104,19 @@ export default {
   data() {
     return {
       newShop: {
-        name: "淘淘宠物店",
-        contact: "陈涛",
-        phone: "18182339945",
-        addr: "青羊区",
-        type: "食物",
+        name: "",
+        contact: "",
+        phone: "",
+        addr: "",
+        type: "",
         license: "",
         imgs: "",
         startTime: "",
         endTime: "",
-        area: "221",
-        parking: "有",
-        wifi: "有",
-        brief: "爱的宠物店",
+        area: "",
+        parking: "",
+        wifi: "",
+        brief: "",
         managerId: "",
         status: "审核中"
       }
@@ -120,12 +124,15 @@ export default {
   },
   methods: {
     handleSubmit() {
-      axios.post("/shops", this.newShop).then(data => {
+      this.applayShopAsync(this.newShop).then(data => {
         if(data.status === 200){
           this.$message({
           message: '恭喜你，申请成功，请耐心等待审核',
           type: 'success'
         });
+        this.$refs.newShop.resetField();
+        this.$refs.licenseRef.clearFiles();
+        this.$refs.imgRef.clearFiles();
         }
       });
     },
@@ -134,7 +141,8 @@ export default {
     },
     imgsSuccess({ url }) {
       this.newShop.imgs = url;
-    }
+    },
+    ...mapActions(["applayShopAsync"])
   }
 };
 </script>

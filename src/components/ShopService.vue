@@ -209,6 +209,7 @@ export default {
 .cbody {
   width: 240px;
   height: 350px;
+  position:relative;
 }
 .image {
   width: 200px;
@@ -227,7 +228,9 @@ export default {
   margin-right: 10px;
 }
 .btns {
-  text-align: right;
+  position: absolute;
+  right:20px;
+  bottom:0;
 }
 .scrollcontain {
   display: flex;

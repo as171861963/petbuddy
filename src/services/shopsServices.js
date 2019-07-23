@@ -8,6 +8,10 @@ export default {
 
     async changeShopStatus(params){
         return await axios.put(`/shops/${params._id}`,params.newAttr);
+    },
+
+    async applyShop(params){
+        return await axios.post("/shops", params)
     }
 
 }

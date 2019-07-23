@@ -49,9 +49,6 @@
       <el-table-column type="expand" width="55">
         <template slot-scope="props">
           <el-form label-position="left" class="demo-table-expand">
-            <el-form-item label="图片">
-              <img :src=" props.row.imgs" alt="pet" style="width:100px;" />
-            </el-form-item>
             <el-form-item label="适用规格">
               <span>{{ props.row.for }}</span>
             </el-form-item>
@@ -83,6 +80,11 @@
         </template>
       </el-table-column>
       <!-- 表头 -->
+      <el-table-column label="图片">
+         <template scope="scope">
+            <img :src="scope.row.imgs" width="100" height="100"/>
+         </template>
+      </el-table-column>
       <el-table-column label="商品名称" prop="name"></el-table-column>
       <el-table-column label="类型" prop="type"></el-table-column>
       <el-table-column label="材质" prop="texture"></el-table-column>
@@ -225,9 +227,10 @@ export default {
         keepTime: "",
         brief: "",
         price: "",
-        imgs: ""
+        imgs: "",
+        managerId:""
       },
-      update: {}
+      update: {},
     };
   },
   computed: {
@@ -307,6 +310,15 @@ export default {
 </script>
 
 <style scoped>
+.demo-table-expand {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 75px;
+}
+.demo-table-expand .el-form-item {
+    margin-right: 30px;
+    width:300px;
+  }
 .iconBtn,
 .defineBtn {
   background-color: #99cccc;
