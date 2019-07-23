@@ -1,5 +1,5 @@
 <template>
-  <div style="height:498px;">
+  <div style="">
     <!-- 搜索栏 -->
     <div class="BtnBox">
       <el-button
@@ -32,10 +32,6 @@
         @click="searchPet()"
       >搜索</el-button>
       <el-button class="iconBtn" type="primary" icon="el-icon-refresh">刷新</el-button>
-      <input type="radio" id="salesVolume" name="inputBtn" @focus="sort('color')" />
-      <label for="salesVolume">按销量排序</label>
-      <input type="radio" id="price" name="inputBtn" @focus="sort('price')" />
-      <label for="price">按价格排序</label>
     </div>
     <!-- 隐藏的添加表单 -->
     <el-dialog :title="btn" :visible.sync="addPet" :close-on-click-modal="false" top="10px">
@@ -170,25 +166,13 @@ export default {
     return {
       options: [
         {
-          value: "name",
+          value: "type",
           label: "商品名称"
         },
         {
           value: "price",
           label: "价格"
         },
-        {
-          value: "addr",
-          label: "产地"
-        },
-        {
-          value: "color",
-          label: "花色"
-        },
-        {
-          value: "gender",
-          label: "性别"
-        }
       ],
       value: "",
       btn: "",
@@ -233,7 +217,7 @@ export default {
         });
         return;
       }
-      this.getPetsAsync(this.managerId);
+      this.getPetsAsync({_id:this.managerId});
     },
     sort(key) {
         this.getPetsAsync({_id:this.managerId, key});
@@ -252,7 +236,7 @@ export default {
         this.addPet = false;
       } else if (this.btn === "修改商品") {
         this.updateToPetAsync(this.form);
-        this.getPetsAsync(this.managerId);
+        this.getPetsAsync({_id:this.managerId});
         this.addPet = false;
       }
     },
@@ -323,6 +307,8 @@ export default {
 }
 .myTable {
   width: 100%;
+  height:540px;
+  overflow: hidden;
   overflow: scroll;
 }
 .myTable::-webkit-scrollbar {

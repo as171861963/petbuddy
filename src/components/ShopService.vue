@@ -25,7 +25,7 @@
             </div>
             <div class="btns">
               <el-button type="text" @click="handleEdit(item)">编辑</el-button>
-              <el-button type="text" @click="handleDelete(item)">删除</el-button>
+              <el-button type="text" @click="handleDelete(item._id)">删除</el-button>
             </div>
           </div>
         </el-card>

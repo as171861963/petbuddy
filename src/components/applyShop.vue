@@ -130,9 +130,7 @@ export default {
           message: '恭喜你，申请成功，请耐心等待审核',
           type: 'success'
         });
-        this.$refs.newShop.resetField();
-        this.$refs.licenseRef.clearFiles();
-        this.$refs.imgRef.clearFiles();
+        location.hash="#/info/shopManage"
         }
       });
     },
@@ -150,7 +148,7 @@ export default {
 <style scoped>
 .container {
   width: 100%;
-  height: 500px;
+  height: 540px;
   margin: 20px auto 0px;
   display: flex;
   flex-direction: column;

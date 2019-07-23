@@ -31,10 +31,6 @@
         @click="searchPet"
       >搜索</el-button>
       <el-button class="iconBtn" type="primary" icon="el-icon-refresh">刷新</el-button>
-      <input type="radio" id="salesVolume" name="inputBtn" @focus="sort('color')" />
-      <label for="salesVolume">按销量排序</label>
-      <input type="radio" id="price" name="inputBtn" @focus="sort('price')" />
-      <label for="price">按价格排序</label>
     </div>
 
     <!-- 商品详情表格 -->
@@ -201,10 +197,6 @@ export default {
         {
           value: "price",
           label: "价格"
-        },
-        {
-          value: "type",
-          label: "类型"
         }
       ],
       value: "",
@@ -336,7 +328,7 @@ export default {
   margin-left: 25px;
 }
 .mtable {
-  height: 498px;
+  height: 550px;
 }
 .mtable {
   width: 100%;
