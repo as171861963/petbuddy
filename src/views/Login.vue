@@ -10,14 +10,14 @@
           class="formItem"
           placeholder="请输入用户名"
           prefix-icon="el-icon-user"
-          v-model="userValue"
+          v-model="user.username"
         />
         <el-input
           class="formItem"
           placeholder="请输入密码"
           type="password"
           prefix-icon="el-icon-lock"
-          v-model="pwdValue"
+          v-model="user.password"
         />
         <div class="formItem">
           <el-button type="primary" style="width:100%" @click="login">立即登录</el-button>
@@ -34,13 +34,15 @@ export default {
   mounted() {
     const str = this.$route.params.username;
     if (str) {
-      this.userValue = str;
+      this.user.username = str;
     }
   },
   data() {
     return {
-      userValue: "jack",
-      pwdValue: "123456"
+      user:{
+        username: "",
+        password: ""
+      }
     };
   },
   methods: {
@@ -48,10 +50,7 @@ export default {
       this.$router.push(`/signIn`);
     },
     login() {
-      this.loginAsync({
-        username: this.userValue,
-        password: this.pwdValue
-      }).then(data => {
+      this.loginAsync(this.user).then(data => {
         if (data.success) {
           this.$message({
             message: "登陆成功",

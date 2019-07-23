@@ -118,9 +118,6 @@
       <el-table-column type="expand" width="55">
         <template slot-scope="props">
           <el-form label-position="left" class="demo-table-expand">
-            <el-form-item label="图片：">
-              <img :src=" props.row.imgs" alt="pet" style="width:150px;" />
-            </el-form-item>
             <el-form-item label="产地：">
               <span>{{ props.row.addr }}</span>
             </el-form-item>
@@ -143,6 +140,11 @@
         </template>
       </el-table-column>
       <!-- 表头 -->
+       <el-table-column label="图片" prop="name">
+          <template scope="scope">
+              <img :src="scope.row.imgs" alt="pet" style="width:150px;height:100px" />
+          </template>
+       </el-table-column>
       <el-table-column label="商品名称" prop="name"></el-table-column>
       <el-table-column label="性别" prop="gender"></el-table-column>
       <el-table-column label="年龄" prop="age"></el-table-column>
@@ -209,28 +211,32 @@ export default {
         managerId: "",
         imgs: ""
       },
-      update: {}
+      managerId: "",
+      update: {},
     };
   },
   computed: {
     ...mapState(["rows"])
   },
   mounted() {
-    this.getPetsAsync({_id:localStorage.getItem("_id")});
+    const _id = localStorage.getItem("_id");
+    this.managerId = _id;
+    this.form.managerId = _id;
+    this.getPetsAsync({_id});
   },
   methods: {
     searchPet() {
       if (this.pet != "") {
         this.searchToPetAsync({
-          managerId: localStorage.getItem("_id"),
+          managerId: this.managerId,
           [this.value]: this.pet
         });
         return;
       }
-      this.getPetsAsync(localStorage.getItem("_id"));
+      this.getPetsAsync(this.managerId);
     },
     sort(key) {
-        this.getPetsAsync({_id:localStorage.getItem("_id"), key});
+        this.getPetsAsync({_id:this.managerId, key});
     },
     ...mapActions([
       "addToPetAsync",
@@ -241,14 +247,12 @@ export default {
     ]),
     addToPet() {
       if (this.btn === "增加商品") {
-        const id = localStorage.getItem("_id");
-        this.form.managerId = id;
         this.addToPetAsync(this.form);
-        this.getPetsAsync({_id:localStorage.getItem("_id")});
+        this.getPetsAsync(this.managerId);
         this.addPet = false;
       } else if (this.btn === "修改商品") {
         this.updateToPetAsync(this.form);
-        this.getPetsAsync({_id:localStorage.getItem("_id")});
+        this.getPetsAsync(this.managerId);
         this.addPet = false;
       }
     },
@@ -258,7 +262,7 @@ export default {
     deletePet() {
       this.centerDialogVisible = false;
       this.deleteToPetAsync(this.update._id);
-      this.getPetsAsync({_id:localStorage.getItem("_id")});
+      this.getPetsAsync(this.managerId);
     },
     dialog(value) {
       this.addPet = true;
@@ -289,6 +293,15 @@ export default {
 </script>
 
 <style scoped>
+.demo-table-expand {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 75px;
+}
+.demo-table-expand .el-form-item {
+    margin-right: 30px;
+    width:300px;
+  }
 .iconBtn,
 .defineBtn {
   background-color: #99cccc;

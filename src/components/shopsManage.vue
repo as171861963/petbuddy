@@ -1,27 +1,39 @@
 <template>
   <div>
-    <el-table :data="info.rows" stripe class="mtable">
+    <el-table :data="info" stripe class="mtable">
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" flex class="demo-table-expand">
-            <el-form-item label="营业时间">
+            <div>
+              <el-form-item>
+              <img :src="props.row.license" alt="" width="300" height="200">
+              </el-form-item>
+            </div>
+            <div class="textinfo">
+              <el-form-item label="营业时间:">
               <span>{{formatTime(props.row.startTime)}}-{{formatTime(props.row.endTime)}}</span>
-            </el-form-item>
-            <el-form-item label="面积:">
-              <span>{{props.row.area}}</span>
-            </el-form-item>
-            <el-form-item label="WIFI:">
-              <span>{{props.row.wifi}}</span>
-            </el-form-item>
-            <el-form-item label="停车:">
-              <span>{{props.row.parking}}</span>
-            </el-form-item>
-            <el-form-item label="门店简介:">
-              <span>{{props.row.brief}}</span>
-            </el-form-item>
+              </el-form-item>
+              <el-form-item label="面积:">
+                <span>{{props.row.area}}</span>
+              </el-form-item>
+              <el-form-item label="WIFI:">
+                <span>{{props.row.wifi}}</span>
+              </el-form-item>
+              <el-form-item label="停车:">
+                <span>{{props.row.parking}}</span>
+              </el-form-item>
+              <el-form-item label="门店简介:">
+                <span>{{props.row.brief}}</span>
+              </el-form-item>
+            </div>
           </el-form>
         </template>
       </el-table-column>
+      <el-table-column label="图片" prop="name">
+          <template scope="scope">
+              <img :src="scope.row.imgs" style="width:150px;height:100px" />
+          </template>
+       </el-table-column>
       <el-table-column prop="name" label="门店名称" width="180"></el-table-column>
       <el-table-column prop="type" label="门店类型" width="180"></el-table-column>
       <el-table-column prop="contact" label="联系人"></el-table-column>
@@ -48,7 +60,7 @@ export default {
     this.getShopsAsync(managerId);
   },
   computed:{
-    ...mapState({ info:"data" })
+    ...mapState({ info:"rows" })
   },
   methods: {
     formatTime(DateString){
@@ -85,19 +97,23 @@ export default {
 }
 .demo-table-expand {
   display: flex;
-  flex-wrap: wrap;
   border-bottom: none;
 }
-.demo-table-expand label {
-  width: 90px;
-  color: #99a9bf;
+.textinfo{
+  flex-grow: 1;
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 20px;
+  height: 200px;
+  align-items: center;
 }
-.el-table::before{
-    height: 0;
+.demo-table-expand .textinfo .el-form-item {
+    margin:0;
+    width:200px;
+    height: 50px;
 }
-.demo-table-expand .el-form-item {
-  margin-right: 0;
-  margin-bottom: 0;
-  width: 50%;
+.el-form-item__content{
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
