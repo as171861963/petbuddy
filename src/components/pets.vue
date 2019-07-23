@@ -244,11 +244,11 @@ export default {
         const id = localStorage.getItem("_id");
         this.form.managerId = id;
         this.addToPetAsync(this.form);
-        this.getPetsAsync(localStorage.getItem("_id"));
+        this.getPetsAsync({_id:localStorage.getItem("_id")});
         this.addPet = false;
       } else if (this.btn === "修改商品") {
         this.updateToPetAsync(this.form);
-        this.getPetsAsync(localStorage.getItem("_id"));
+        this.getPetsAsync({_id:localStorage.getItem("_id")});
         this.addPet = false;
       }
     },
@@ -258,7 +258,7 @@ export default {
     deletePet() {
       this.centerDialogVisible = false;
       this.deleteToPetAsync(this.update._id);
-      this.getPetsAsync(localStorage.getItem("_id"));
+      this.getPetsAsync({_id:localStorage.getItem("_id")});
     },
     dialog(value) {
       this.addPet = true;

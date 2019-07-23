@@ -252,11 +252,11 @@ export default {
         const id = localStorage.getItem("_id");
         this.form.managerId = id;
         this.addToFootAsync(this.form);
-        this.getFootsAsync(localStorage.getItem("_id"));
+        this.getFootsAsync({_id:localStorage.getItem("_id")});
         this.addFoot = false;
       } else if (this.btn === "修改商品") {
         this.updateToFootAsync(this.form);
-        this.getFootsAsync(localStorage.getItem("_id"));
+        this.getFootsAsync({_id:localStorage.getItem("_id")});
         this.addFoot = false;
       }
     },
@@ -271,12 +271,12 @@ export default {
         });
         return;
       }
-      this.getFootsAsync(localStorage.getItem("_id"));
+      this.getFootsAsync({_id:localStorage.getItem("_id")});
     },
     deleteFoot() {
       this.centerDialogVisible = false;
       this.deleteToFootAsync(this.update._id);
-      this.getFootsAsync(localStorage.getItem("_id"));
+      this.getFootsAsync({_id:localStorage.getItem("_id")});
     },
     dialog(value) {
       this.addFoot = true;
