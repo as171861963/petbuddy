@@ -191,7 +191,7 @@ export default {
     return {
       options: [
         {
-          value: "name",
+          value: "type",
           label: "商品名称"
         },
         {

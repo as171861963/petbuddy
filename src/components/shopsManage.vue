@@ -89,7 +89,7 @@ export default {
 <style scoped>
 .mtable {
   width: 100%;
-  height: 498px;
+  height: 580px;
   overflow-y: scroll;
 }
 .mtable::-webkit-scrollbar {
@@ -115,5 +115,8 @@ export default {
 .el-form-item__content{
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.el-table::before {
+    height: 0px;
 }
 </style>
