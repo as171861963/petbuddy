@@ -65,11 +65,11 @@ export default {
     return {
       tableData3: [
         {
-          client: "多多",
-          name: "中华田园犬",
-          payment: "已付款",
-          state: "已发货",
-          shop: "王小虎夫妻店",
+          client: "多多",//客户
+          name: "中华田园犬",//购买物品
+          payment: "已付款",//是否付款  
+          state: "已发货",//是否发货
+          shop: "王小虎夫妻店",//购买商店
           id: "1033124984651653"
         },
         {
